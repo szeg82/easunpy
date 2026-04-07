@@ -160,7 +160,7 @@ class AsyncISolar:
         """Create PVData object from processed values."""
         try:
             # Check if we have at least some PV data
-            if any(key in values for key in ["pv_total_power", "pv1_voltage", "pv2_voltage"]):
+            if any(key in values for key in ["pv_total_power", "pv1_voltage", "pv2_voltage", "pv_temperature"]):
                 return PVData(
                     total_power=values.get("pv_total_power"),
                     charging_power=values.get("pv_charging_power"),

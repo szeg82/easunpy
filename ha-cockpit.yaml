@@ -27,6 +27,7 @@ views:
           - sensor.easun_pv2_power
           - sensor.easun_pv_generated_today
           - sensor.easun_pv_generated_total
+          - sensor.easun_pv_temperature
 
       - type: entities
         title: Grid Sensors
