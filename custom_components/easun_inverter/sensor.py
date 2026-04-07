@@ -196,15 +196,11 @@ class EasunSensor(SensorEntity):
     @property
     def name(self):
         """Return the name of the sensor."""
-        if self._entry_id:
-            return f"Easun {self._name} ({self._entry_id[:8]})"
         return f"Easun {self._name}"
 
     @property
     def unique_id(self):
         """Return a unique ID."""
-        if self._entry_id:
-            return f"easun_inverter_{self._entry_id}_{self._id}"
         return f"easun_inverter_{self._id}"
 
     @property
