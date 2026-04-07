@@ -93,7 +93,7 @@ def create_dashboard(inverter_data: InverterData, status_message: str | Text = "
         if inverter_data.pv.pv1_power is not None:
             pv_table.add_row("PV1 Power", f"{inverter_data.pv.pv1_power}W")
         if inverter_data.pv.temperature is not None:
-            pv_table.add_row("Temperature", f"{inverter_data.pv.temperature}°C")
+            pv_table.add_row("PV Module Temperature", f"{inverter_data.pv.temperature}°C")
         
         # Only show PV2 data if it's supported and not None
         if inverter_data.pv.pv2_voltage is not None and inverter_data.pv.pv2_voltage > 0:
@@ -230,7 +230,7 @@ async def print_single_update(inverter_data: InverterData):
         if inverter_data.pv.pv1_voltage is not None and inverter_data.pv.pv1_current is not None and inverter_data.pv.pv1_power is not None:
             console.print(f"PV1: {inverter_data.pv.pv1_voltage:.1f}V, {inverter_data.pv.pv1_current:.1f}A, {inverter_data.pv.pv1_power}W")
         if inverter_data.pv.temperature is not None:
-            console.print(f"Temperature: {inverter_data.pv.temperature}°C")
+            console.print(f"Module Temperature: {inverter_data.pv.temperature}°C")
         if inverter_data.pv.pv2_voltage is not None and inverter_data.pv.pv2_voltage > 0:
             if inverter_data.pv.pv2_current is not None and inverter_data.pv.pv2_power is not None:
                 console.print(f"PV2: {inverter_data.pv.pv2_voltage:.1f}V, {inverter_data.pv.pv2_current:.1f}A, {inverter_data.pv.pv2_power}W")

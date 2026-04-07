@@ -259,7 +259,7 @@ async def async_setup_entry(
         EasunSensor(data_collector, "pv_total_power", "PV Total Power", UnitOfPower.WATT, "pv", "total_power", None, config_entry.entry_id),
         EasunSensor(data_collector, "pv_charging_power", "PV Charging Power", UnitOfPower.WATT, "pv", "charging_power", None, config_entry.entry_id),
         EasunSensor(data_collector, "pv_charging_current", "PV Charging Current", UnitOfElectricCurrent.AMPERE, "pv", "charging_current", None, config_entry.entry_id),
-        EasunSensor(data_collector, "pv_temperature", "PV Temperature", UnitOfTemperature.CELSIUS, "pv", "temperature", None, config_entry.entry_id),
+        EasunSensor(data_collector, "pv_temperature", "PV Module Temperature", UnitOfTemperature.CELSIUS, "pv", "temperature", None, config_entry.entry_id),
         EasunSensor(data_collector, "pv1_voltage", "PV1 Voltage", UnitOfElectricPotential.VOLT, "pv", "pv1_voltage", None, config_entry.entry_id),
         EasunSensor(data_collector, "pv1_current", "PV1 Current", UnitOfElectricCurrent.AMPERE, "pv", "pv1_current", None, config_entry.entry_id),
         EasunSensor(data_collector, "pv1_power", "PV1 Power", UnitOfPower.WATT, "pv", "pv1_power", None, config_entry.entry_id),
