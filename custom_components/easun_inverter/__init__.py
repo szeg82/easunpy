@@ -13,7 +13,7 @@ DOMAIN = "easun_inverter"
 
 # List of platforms to support. There should be a matching .py file for each,
 # eg. switch.py and sensor.py
-PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.SELECT, Platform.NUMBER]
+PLATFORMS: list[Platform] = [Platform.SENSOR]
 
 # Use config_entry_only_config_schema since we only support config flow
 CONFIG_SCHEMA = cv.config_entry_only_config_schema("easun_inverter")

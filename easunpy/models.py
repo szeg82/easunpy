@@ -132,12 +132,12 @@ ISOLAR_SMG_II_11K = ModelConfig(
         "time_register_5": RegisterConfig(701, processor=int),  # Second
         "pv_energy_today": RegisterConfig(702, 0.01),
         "pv_energy_total": RegisterConfig(703, 0.01),
-        "output_source_priority": RegisterConfig(601),
-        "charger_source_priority": RegisterConfig(632),
-        "bulk_charging_voltage": RegisterConfig(637),
-        "floating_charging_voltage": RegisterConfig(638),
-        "max_charging_current": RegisterConfig(640),
-        "max_mains_charging_current": RegisterConfig(641),
+        #"output_source_priority": RegisterConfig(601),
+        #"charger_source_priority": RegisterConfig(632),
+        #"bulk_charging_voltage": RegisterConfig(637),
+        #"floating_charging_voltage": RegisterConfig(638),
+        #"max_charging_current": RegisterConfig(640),
+        #"max_mains_charging_current": RegisterConfig(641),
     }
 )
 
