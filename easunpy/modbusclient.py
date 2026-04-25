@@ -100,6 +100,42 @@ def run_single_request(inverter_ip: str, local_ip: str, request: str):
     return response
 
 # Función para crear la solicitud completa
+def create_write_request(transaction_id: int, protocol_id: int, unit_id: int, function_code: int,
+                        register_address: int, value: int) -> str:
+    """
+    Create a Modbus Write command (0x06) with the correct length and CRC.
+    """
+    # Construir el paquete RTU
+    rtu_packet = bytearray([
+        unit_id,
+        function_code,
+        (register_address >> 8) & 0xFF, register_address & 0xFF,
+        (value >> 8) & 0xFF, value & 0xFF
+    ])
+
+    # Calcular el CRC para el paquete RTU
+    crc = crc16_modbus(rtu_packet)
+    crc_low = crc & 0xFF
+    crc_high = (crc >> 8) & 0xFF
+
+    # Agregar CRC al paquete RTU
+    rtu_packet.extend([crc_low, crc_high])
+    
+    # Campo adicional `FF04`
+    rtu_packet = bytearray([0xFF, 0x04]) + rtu_packet
+    
+    # Calcular la longitud total
+    length = len(rtu_packet)
+    
+    # Construir el comando completo
+    command = bytearray([
+        (transaction_id >> 8) & 0xFF, transaction_id & 0xFF,  # Transaction ID
+        (protocol_id >> 8) & 0xFF, protocol_id & 0xFF,        # Protocol ID
+        (length >> 8) & 0xFF, length & 0xFF                  # Longitud
+    ]) + rtu_packet
+
+    return command.hex()
+
 def create_request(transaction_id: int, protocol_id: int, unit_id: int, function_code: int,
                    register_address: int, register_offset: int) -> str:
     """

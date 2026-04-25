@@ -1,7 +1,7 @@
 import logging
 from typing import List, Optional, Dict, Tuple, Any
 from .async_modbusclient import AsyncModbusClient
-from .modbusclient import create_request, decode_modbus_response
+from .modbusclient import create_request, create_write_request, decode_modbus_response
 from .isolar import BatteryData, PVData, GridData, OutputData, SystemStatus, OperatingMode
 import datetime
 from .models import MODEL_CONFIGS, ModelConfig
@@ -106,6 +106,30 @@ class AsyncISolar:
         status = self._create_system_status(values)
         
         return battery, pv, grid, output, status
+
+    async def write_register(self, register_name: str, value: int) -> bool:
+        """Write a value to a single register."""
+        address = self.model_config.get_address(register_name)
+        if address is None or address == 0:
+            logger.error(f"Register {register_name} not found or not writable for model {self.model}")
+            return False
+
+        # Apply inverse scaling if needed (not implemented yet, assuming raw value for now or handled by caller)
+        # For now, we assume the caller provides the raw integer value to be written
+        
+        transaction_id = self._get_next_transaction_id()
+        request = create_write_request(transaction_id, 0x0001, 0x00, 0x06, address, value)
+        
+        logger.info(f"Writing value {value} to register {register_name} (address {address})")
+        responses = await self.client.send_bulk([request])
+        
+        if responses and len(responses) > 0:
+            logger.debug(f"Write response: {responses[0]}")
+            # Successful write response for function code 06 is a echo of the request
+            return True
+        
+        return False
+
         
     def _create_register_groups(self) -> list[tuple[int, int]]:
         """Create optimized register groups for reading."""
@@ -233,13 +257,25 @@ class AsyncISolar:
                     return SystemStatus(
                         operating_mode=op_mode,
                         mode_name=op_mode.name,
-                        inverter_time=inverter_timestamp
+                        inverter_time=inverter_timestamp,
+                        output_source_priority=values.get("output_source_priority"),
+                        charger_source_priority=values.get("charger_source_priority"),
+                        bulk_charging_voltage=values.get("bulk_charging_voltage"),
+                        floating_charging_voltage=values.get("floating_charging_voltage"),
+                        max_charging_current=values.get("max_charging_current"),
+                        max_mains_charging_current=values.get("max_mains_charging_current")
                     )
                 except ValueError:
                     return SystemStatus(
                         operating_mode=OperatingMode.FAULT,
                         mode_name=f"UNKNOWN ({mode_value})",
-                        inverter_time=inverter_timestamp
+                        inverter_time=inverter_timestamp,
+                        output_source_priority=values.get("output_source_priority"),
+                        charger_source_priority=values.get("charger_source_priority"),
+                        bulk_charging_voltage=values.get("bulk_charging_voltage"),
+                        floating_charging_voltage=values.get("floating_charging_voltage"),
+                        max_charging_current=values.get("max_charging_current"),
+                        max_mains_charging_current=values.get("max_mains_charging_current")
                     )
         except Exception as e:
             logger.warning(f"Failed to create SystemStatus: {e}")
